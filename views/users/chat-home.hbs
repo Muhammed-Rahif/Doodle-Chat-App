@@ -21,8 +21,8 @@
 									<span class="online_icon"></span>
 								</div>
 								<div class="user_info">
-									<span>Khalid</span>
-									<p>Kalid is online</p>
+									<span>{{user.name}}</span>
+									<p>{{user.email}}</p>
 								</div>
 							</div>
 						</li>
@@ -48,16 +48,16 @@
 				<div class="card-header msg_head">
 					<div class="d-flex bd-highlight">
 						<div class="img_cont">
-							<img src="/images/def-profile.png" class="rounded-circle user_img">
+							<img src="/images/def-group.jpg" class="rounded-circle user_img">
 							<span class="online_icon"></span>
 						</div>
 						<div class="user_info">
 							{{#if user}}
-							<span>{{user.name}}</span>
-							<p>{{user.email}}</p>
+							<span>{{user.room}}</span>
+							<p>589 Online</p>
 							{{else}}
 							<span>----</span>
-							<p>0000 Messages</p>
+							<p>0000 Online</p>
 							{{/if}}
 						</div>
 						{{!-- Video call and audio call icons --}}
@@ -68,9 +68,10 @@
 					</div>
 					<div style="width: 12px;height: 12px;">
 						<button style="background: transparent;border: transparent;outline: transparent;"
-							id="action_menu_btn"><i class="fas fa-ellipsis-v"></i></button>
+							id="action_menu_btn"><a style="text-decoration: none;" class="text-white" href="/logout"><i
+										class="fas fa-sign-out-alt"></i></a></button>
 					</div>
-					<div id="action-menu" class="action_menu">
+					{{!-- <div id="action-menu" class="action_menu">
 						<ul>
 							<li><i class="fas fa-user-circle"></i> View profile</li>
 							<li><i class="fas fa-users"></i> Add to close friends</li>
@@ -78,9 +79,9 @@
 							<li><a style="text-decoration: none;" class="text-white" href="/logout"><i
 										class="fas fa-sign-out-alt"></i> Sign out</a></li>
 						</ul>
-					</div>
+					</div> --}}
 				</div>
-				<div class="card-body msg_card_body">
+				<div id="card-body" class="card-body msg_card_body">
 					<div class="d-flex justify-content-start mb-4">
 						<div class="img_cont_msg">
 							<img src="/images/def-profile.png" class="rounded-circle user_img_msg">
@@ -116,6 +117,51 @@
 		</div>
 	</div>
 </div>
+
+<script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+
+
+
+<script>
+
+
+
+	const socket = io();
+
+	var userData = {};
+	socket.on('connect', function () {
+		userData.name = `{{user.name}}`;
+		userData.room = `{{user.room}}`;
+		userData.email = `{{user.email}}`;
+		userData.id = socket.id;
+		socket.emit('userConnected', userData)
+	});
+
+	socket.on('disconnect', function () {
+		socket.emit('userDisconnected', userData)
+	});
+
+	socket.on('userConnect', (msg) => {
+		$('#card-body').append(`<div class="tag">
+						<p>${msg.name} is joined</p>
+					</div>`);
+	});
+
+	socket.on('userDisconnect', (userName) => {
+		console.log(userName);
+		$('#card-body').append(`<div class="tag">
+						<p>${userName} left</p>
+					</div>`);
+	});
+
+
+
+
+
+</script>
+
+
+
 
 <script>
 	$("#action_menu_btn").focus(function () {

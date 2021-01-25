@@ -242,3 +242,12 @@ body{
     rgb(162, 0, 255)
   );
 }
+.tag{
+  background: rgba(255, 255, 255, 0.3);
+  text-align: center;
+  border-radius: 10px;
+  margin-left: 2em;
+  margin-right: 2em;
+  color: white;
+  opacity: 50%;
+}
