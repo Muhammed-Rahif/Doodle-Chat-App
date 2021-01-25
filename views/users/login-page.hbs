@@ -1,0 +1,22 @@
+<div style="overflow-x: auto;" class="glass-size justify-content-center p-5">
+    <div class="col-md-12">
+        <h2 class="text-center text-white">Login page...</h2>
+    </div>
+    <form method="POST" action="/login">
+        <div class="col-md-12 text-white">
+            <label for="exampleInputPassword1" class="form-label">Name</label>
+            <input name="name" type="text" class="form-control bg-light-blue" id="exampleInputPassword1"
+                placeholder="Name" required>
+        </div>
+        <div class="col-md-12 mt-4 text-white">
+            <label for="exampleInputEmail1" class="form-label">Email address</label>
+            <input name="email" placeholder="Email" type="email" class="form-control  bg-light-blue"
+                id="exampleInputEmail1" aria-describedby="emailHelp" required>
+            <div id="emailHelp" class="form-text text-white">We'll never share your email with anyone else.</div>
+        </div>
+        <select name="room" class="form-select  bg-light-blue" size="3" aria-label="size 3 select example" required>
+            <option value="Public" selected>Public</option>
+        </select>
+        <button type="submit" class="btn btn-primary glass mt-2">Submit</button>
+    </form>
+</div>
