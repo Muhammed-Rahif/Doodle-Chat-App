@@ -38,7 +38,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.get('/', (req, res) => {
     let user = req.session.userData
     if (user) {
-        res.render(`users/chat-home`, { user })
+        res.render(`users/chat-page`, { user })
     } else {
         res.redirect('/login')
     }
@@ -61,33 +61,46 @@ app.get('/logout', (req, res) => {
     res.redirect('/')
 })
 
-
+// All users deatials
+var allUsers = [];
+function searchUser(userId) {
+    for (var i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].id === userId) {
+            return allUsers[i];
+        }
+    }
+};
+function searchUserIndex(userId) {
+    for (var i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].id === userId) {
+            return i;
+        }
+    }
+};
 
 // Socket.io
 io.on("connection", function (socket) {
     console.log(`A user connected`);
 
-    // All users deatials
-    var allUsers = [];
-    function searchUser(userId){
-        for (var i=0; i < allUsers.length; i++) {
-            if (allUsers[i].id === userId) {
-                return allUsers[i];
-            }
-        }
-    };
-
-    socket.on("disconnect",async () => {
+    socket.on("disconnect", async () => {
         console.log("A user disconnected");
         var userData = await searchUser(socket.id);
-        io.emit('userDisconnect', userData.name);
-    });
-    
-    socket.on("userConnected",(userData)=>{
-        allUsers.push(userData);
-        io.emit('userConnect', userData);
+        let userIndex = searchUserIndex(userData.id);
+        allUsers = allUsers.filter(function (el) {
+            return el.id !== socket.id;
+        });
+        console.log(allUsers);
+        io.emit('userDisconnect', userData, allUsers);
     });
 
-    
+    socket.on("userConnected", (userData) => {
+        allUsers.push(userData);
+        console.log(allUsers);
+        io.emit('userConnect', userData, allUsers);
+    });
+
+    socket.on("sendingMsg", (message) => {
+        io.emit('sendMsg', message)
+    })
 });
 

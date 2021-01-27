@@ -1,27 +1,101 @@
-<div style="overflow-x: auto;" class="glass-size justify-content-center p-5">
-    <div class="col-md-12">
-        <h2 class="text-center text-white">Login page...</h2>
+<link rel="stylesheet" href="stylesheets/login-page.css">
+<div id="wrapper">
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+        <div class="sidebar-box blur-bgimage">
+            <img class="rounded-profile" src="/images/d-vector-logo.png" alt="">
+            <br>
+            <img class="rounded-profile" src="/images/doodle-vector-logo.png" alt="">
+            <h4 class="sidebar-h">Log in to join a room</h4>
+        </div>
+        <div>
+            <div class="ul">
+
+            </div>
+        </div>
     </div>
-    <form method="post" action="/login">
-        <div class="col-md-6 m-auto text-white">
-            <label for="exampleInputPassword1" class="form-label">Name</label>
-            <input name="name" type="text" class="form-control bg-light-blue" id="exampleInputPassword1"
-                placeholder="Name" required>
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- Toggle bar -->
+                    <a href="#" class="btn" id="menu-toggle"><i class="fas fa-bars"></i></a>
+
+                    <!-- Content -->
+                    <div class="container content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="card" class="card">
+                                    <div class="card-header">
+                                        <span>Login page</span>
+                                        <a href="#" class="btn logut-btn"><i class="fas fa-sign-out-alt fa-2x"></i></a>
+                                    </div>
+                                    <div style="overflow-y: auto;height: 60vh;" class="card-body height3">
+                                        <ul class="chat-list">
+                                            <li class="notice-tag">
+                                                <h2>Type valid informations to login</h2>
+                                            </li>
+                                            <form class="form" method="post" action="/login">
+                                                <div class="form">
+                                                    <label class="form-label" for="">Name</label>
+                                                    <input type="text" placeholder="Username" class="form-control"
+                                                        name="name" required>
+                                                    <br>
+                                                    <label class="form-label" for="">Email</label>
+                                                    <input type="email" placeholder="Email address" class="form-control"
+                                                        name="email" required>
+                                                    <br>
+                                                    <label class="form-label" for="">Select room</label>
+                                                    <select name="room" class="form-control" size="3"
+                                                        aria-label="size 3 select example" required>
+                                                        <option value="Public" selected>Public</option>
+                                                    </select>
+                                                </div>
+                                                    <label class="form-label" for="">Your profile</label>
+                                                <div onclick="generateImgUrl();"
+                                                    style="height: auto;justify-content: center;display: flex;max-width: 30vw;margin: auto;"
+                                                    class="form-control">
+                                                    <input type="text" id="imgUrl"
+                                                        name="imgUrl" hidden>
+                                                    <img onclick="generateImgUrl();" style="width: 12vw;height: auto;"
+                                                        id="imgPreview" src="" alt="Your profile">
+                                                </div>
+                                        </ul>
+                                    </div>
+                                    <div class="input-div">
+                                        <button class="btn-block btn btn-primary"><i class="fas fa-sign-in-alt"></i>
+                                            <p>Log in</p>
+                                        </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-md-6 m-auto mt-4 text-white">
-            <label for="exampleInputEmail1" class="form-label">Email address</label>
-            <input name="email" placeholder="Email" type="email" class="form-control  bg-light-blue"
-                id="exampleInputEmail1" aria-describedby="emailHelp" required>
-            <div id="emailHelp" class="form-text text-white"><small>We'll never share your email with anyone else.</small></div>
-        </div>
-        <div class="col-md-6 m-auto">
-            <label for="" class="form-label text-white mt-4">Select room</label>
-            <select name="room" class="form-select  bg-light-blue" size="3" aria-label="size 3 select example" required>
-                <option value="Public" selected>Public</option>
-            </select>
-        </div>
-        <div class="col-md-12 text-center">
-            <button type="submit" class="btn btn-primary glass mt-2 m-auto">Log in</button>
-        </div>
-    </form>
+    </div>
 </div>
+<script>
+    window.onload = () => {
+        const imgLogos = ["https://www.bootdey.com/img/Content/avatar/avatar1.png", "https://www.bootdey.com/img/Content/avatar/avatar2.png", "https://www.bootdey.com/img/Content/avatar/avatar3.png", "https://www.bootdey.com/img/Content/avatar/avatar4.png", "https://www.bootdey.com/img/Content/avatar/avatar5.png", "https://www.bootdey.com/img/Content/avatar/avatar6.png", "https://www.bootdey.com/img/Content/avatar/avatar7.png", "https://www.bootdey.com/img/Content/avatar/avatar8.png"];
+
+        var randomNumber = Math.floor(Math.random() * imgLogos.length);
+        let imgUrl = imgLogos[randomNumber];
+
+        $("#imgUrl").val(imgUrl);
+        document.getElementById("imgPreview").src = imgUrl;
+    }
+    function generateImgUrl() {
+        const imgLogos = ["https://www.bootdey.com/img/Content/avatar/avatar1.png", "https://www.bootdey.com/img/Content/avatar/avatar2.png", "https://www.bootdey.com/img/Content/avatar/avatar3.png", "https://www.bootdey.com/img/Content/avatar/avatar4.png", "https://www.bootdey.com/img/Content/avatar/avatar5.png", "https://www.bootdey.com/img/Content/avatar/avatar6.png", "https://www.bootdey.com/img/Content/avatar/avatar7.png", "https://www.bootdey.com/img/Content/avatar/avatar8.png"];
+
+        var randomNumber = Math.floor(Math.random() * imgLogos.length);
+        let imgUrl = imgLogos[randomNumber];
+
+        $("#imgUrl").val(imgUrl);
+        document.getElementById("imgPreview").src = imgUrl;
+    }
+</script>

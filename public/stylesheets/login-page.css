@@ -1,0 +1,279 @@
+
+/* Sidebar */
+#sidebar-wrapper {
+  z-index: 1;
+  position: absolute;
+  width: 0;
+  height: 100%;
+  overflow-y: auto;
+  background: rgba(255, 255, 255, 0.6);
+  opacity: 0.9;
+  transition: all 0.5s;
+  min-height: 100vh;
+}
+
+/* Main Content */
+#page-content-wrapper {
+  width: 100%;
+  position: absolute;
+  padding: 15px;
+  transition: all 0.5s;
+  height: 100vh;
+  background: linear-gradient(to right, #56ccf2, #2f80ed);
+  overflow: hidden;
+}
+
+#menu-toggle {
+  transition: all 0.3s;
+  font-size: 2em;
+  font-family: "Poppins", sans-serif;
+}
+.logut-btn {
+  position: absolute;
+  right: 0;
+  color: #2f80ed;
+  text-decoration: none;
+}
+logut-btn:hover {
+  opacity: 0.8;
+  color: #2f80ed;
+}
+/* Change the width of the sidebar to display it*/
+#wrapper.menuDisplayed #sidebar-wrapper {
+  width: 250px;
+}
+
+#wrapper.menuDisplayed #page-content-wrapper {
+  padding-left: 250px;
+}
+
+/* Sidebar styling */
+.sidebar-box {
+  background-color: rgba(90, 153, 238, 0.6);
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-family: "Poppins", sans-serif;
+  padding-top: 2em;
+  padding-bottom: 2em;
+}
+.rounded-profile {
+  border-radius: 50%;
+  width: 5em;
+  height: 5em;
+}
+.sidebar-h,
+sidebar-p {
+  z-index: 100;
+  color: white;
+  opacity: 0.5;
+}
+.ul {
+  list-style: none;
+  background: transparent;
+  list-style-type: none;
+  padding: 1em;
+}
+.li {
+  display: flex;
+  justify-content: center;
+  vertical-align: middle;
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 0.5em;
+  margin-top: 0.2em;
+  border-radius: 10px;
+  color: white;
+}
+.liImg {
+  max-width: 2em;
+  height: auto;
+}
+.rounded {
+  border-radius: 50%;
+}
+.form-label {
+  color: white;
+  display: block;
+  text-align: center;
+  line-height: 150%;
+  font-size: 2em;
+}
+.form {
+  padding: 1em;
+}
+
+.sidebar-nav li {
+  line-height: 40px;
+  width: 100%;
+  transition: all 0.3s;
+}
+
+.sidebar-nav li a {
+  display: block;
+  text-decoration: none;
+  color: black;
+}
+
+/* .sidebar-nav li:hover {
+    background: #846bab;
+  } */
+
+/* Content */
+body,
+html {
+  font-family: "Poppins", sans-serif;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+#card {
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+  min-height: auto;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
+}
+.card-move {
+  width: 75vw;
+}
+.chat-list {
+  padding: 0;
+  font-size: 0.8em;
+  font-family: "Poppins", sans-serif;
+}
+
+.chat-list li {
+  margin-bottom: 10px;
+  overflow: auto;
+  color: #ffffff;
+}
+
+.chat-list .chat-img {
+  float: left;
+  width: 48px;
+}
+
+.chat-list .chat-img img {
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  border-radius: 50px;
+  width: 100%;
+}
+
+.chat-list .chat-message {
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  border-radius: 50px;
+  background: #5a99ee;
+  display: inline-block;
+  padding: 10px 20px;
+  position: relative;
+}
+
+.chat-list .chat-message:before {
+  content: "";
+  position: absolute;
+  top: 15px;
+  width: 0;
+  height: 0;
+}
+
+.chat-list .chat-message h5 {
+  margin: 0 0 5px 0;
+  font-weight: 600;
+  font-family: "Poppins", sans-serif;
+  line-height: 100%;
+  font-size: 0.9em;
+}
+
+.chat-list .chat-message p {
+  line-height: 18px;
+  margin: 0;
+  padding: 0;
+}
+
+.chat-list .chat-body {
+  margin-left: 20px;
+  float: left;
+  width: 70%;
+}
+
+.chat-list .in .chat-message:before {
+  left: -12px;
+  border-bottom: 20px solid transparent;
+  border-right: 20px solid rgb(90, 153, 238);
+}
+
+.chat-list .out .chat-img {
+  float: right;
+}
+
+.chat-list .out .chat-body {
+  float: right;
+  margin-right: 20px;
+  text-align: right;
+}
+
+.chat-list .out .chat-message {
+  background: #fc6d4c;
+}
+
+.chat-list .out .chat-message:before {
+  right: -12px;
+  border-bottom: 20px solid transparent;
+  border-left: 20px solid #fc6d4c;
+}
+
+.card .card-header:first-child {
+  -webkit-border-radius: 0.3rem 0.3rem 0 0;
+  -moz-border-radius: 0.3rem 0.3rem 0 0;
+  border-radius: 0.3rem 0.3rem 0 0;
+}
+.card .card-header {
+  background: #17202b;
+  border: 0;
+  font-size: 2em;
+  padding: 0.65rem 1rem;
+  position: relative;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  text-align: center;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+}
+.card .card-header small {
+  font-size: 0.5em;
+  font-family: "Poppins", sans-serif;
+}
+
+.content {
+  margin-top: 1em;
+}
+.input-div {
+  display: flex;
+  justify-content: center;
+}
+#input-box {
+  border-radius: 10px;
+  background-color: rgba(90, 153, 238, 0.5);
+}
+#input-box::placeholder {
+  color: white;
+}
+.input-div .btn {
+  border-radius: 10px;
+}
+.notice-tag h2 {
+  color: white;
+  font-size: 1em;
+  text-align: center;
+  background: rgba(90, 153, 238, 0.5);
+  max-width: 60%;
+  margin: auto;
+  margin-top: 1em;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  padding: 0.5em;
+}
