@@ -34,6 +34,42 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 
 
+// All users deatials
+var allUsers = [];
+function searchUser(userId) {
+    for (var i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].id === userId) {
+            return allUsers[i];
+        }
+    }
+};
+function searchUserIndex(userId) {
+    for (var i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].id === userId) {
+            return i;
+        }
+    }
+};
+// All rooms details
+var allRooms = [];
+function searchRoom(roomId) {
+    for (var i = 0; i < allRooms.length; i++) {
+        if (allRooms[i].roomId === roomId) {
+            return allRooms[i];
+        }
+    }
+};
+function searchRoomIndex(roomId) {
+    for (var i = 0; i < allRooms.length; i++) {
+        if (allRooms[i].roomId === roomId) {
+            return i;
+        }
+    }
+};
+
+
+
+
 // Routers
 app.get('/', (req, res) => {
     let user = req.session.userData
@@ -53,30 +89,48 @@ app.get('/login', (req, res) => {
 })
 app.post('/login', (req, res) => {
     let loginData = req.body;
-    req.session.userData = loginData;
-    res.redirect('/')
+    if (loginData.roomName) {
+        req.session.userData = loginData;
+        res.json('/')
+    } else {
+        loginData.roomName = searchRoom(loginData.roomId).roomName;
+        req.session.userData = loginData;
+        res.json('/')
+    }
 })
 app.get('/logout', (req, res) => {
     req.session.userData = null;
     res.redirect('/')
 })
 
-// All users deatials
-var allUsers = [];
-function searchUser(userId) {
-    for (var i = 0; i < allUsers.length; i++) {
-        if (allUsers[i].id === userId) {
-            return allUsers[i];
-        }
+
+app.post('/create-room', (req, res) => {
+    let roomData = req.body;
+    allRooms.push(roomData);
+})
+app.post('/getRooms', (req, res) => {
+    res.json(allRooms)
+})
+
+app.post('/checkRoomPass', (req, res) => {
+    let recRoomData = req.body;
+    let senRoomData = searchRoom(recRoomData.roomId)
+    if ( senRoomData.roomPass===recRoomData.typePass || recRoomData.typePass === 'false') {
+        res.json({ loginStatus: true })
+    } else {
+        res.json({ loginStatus: false })
     }
-};
-function searchUserIndex(userId) {
-    for (var i = 0; i < allUsers.length; i++) {
-        if (allUsers[i].id === userId) {
-            return i;
-        }
+})
+
+app.post('/if-pass',(req,res)=>{
+    let recRoomData = req.body;
+    let senRoomData = searchRoom(recRoomData.roomId)
+    if (senRoomData.roomPass==='false') {
+        res.json({ password:false })
+    } else {
+        res.json({ password:true })
     }
-};
+})
 
 // Socket.io
 io.on("connection", function (socket) {
@@ -89,18 +143,33 @@ io.on("connection", function (socket) {
         allUsers = allUsers.filter(function (el) {
             return el.id !== socket.id;
         });
+        let roomUsers = allUsers.filter((user) => {
+            return user.roomId === userData.roomId
+        });
+        if (roomUsers.length === 0) {
+            allRooms = allRooms.filter(function (el) {
+                return el.roomId !== userData.roomId;
+            });
+        } else {
+            console.log(`Members count : ${roomUsers.length}`);
+        }
         console.log(allUsers);
-        io.emit('userDisconnect', userData, allUsers);
+        io.to(userData.roomId).emit('userDisconnect', userData, roomUsers);
     });
 
     socket.on("userConnected", (userData) => {
         allUsers.push(userData);
+        let roomUsers = allUsers.filter((user) => {
+            return user.roomId === userData.roomId
+        })
         console.log(allUsers);
-        io.emit('userConnect', userData, allUsers);
+        socket.join(userData.roomId);
+        io.to(userData.roomId).emit('userConnect', userData, roomUsers);
     });
 
     socket.on("sendingMsg", (message) => {
-        io.emit('sendMsg', message)
+        console.log(message);
+        io.to(message.roomId).emit('sendMsg', message)
     })
 });
 

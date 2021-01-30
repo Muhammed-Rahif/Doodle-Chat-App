@@ -6,8 +6,8 @@
             <img class="rounded-profile" src="{{user.imgUrl}}" alt="">
             <h4 class="sidebar-h">Name : {{user.name}}</h4>
             <h5 class="sidebar-h">Room :
-                {{#if user.room}}
-                {{user.room}}
+                {{#if user.roomName}}
+                {{user.roomName}}
                 {{else}}
                 Room Name
                 {{/if}}
@@ -37,7 +37,7 @@
                             <div class="col-md-12">
                                 <div id="card" class="card">
                                     <div class="card-header">
-                                        <span>Public Room</span>
+                                        <span>Room name : {{user.roomName}}</span>
                                         <a href="/logout" class="btn logut-btn"><i
                                                 class="fas fa-sign-out-alt fa-2x"></i></a>
                                     </div>
@@ -45,15 +45,15 @@
                                         class="card-body height3">
                                         <ul id="chat-area" class="chat-list">
                                             <li class="notice-tag">
-                                                <h2>Welcome to public room..!</h2>
+                                                <h2>Welcome to {{user.roomName}}</h2>
                                             </li>
                                         </ul>
                                     </div>
                                     <div class="input-div">
                                         <input type="text" placeholder="Type something...!" class="form-control"
                                             name="input-text" id="input-box">
-                                        <button type="submit" id="sendBtn" style="outline: none;" onclick="sendMsg();" class="btn btn-primary"><i
-                                                class="fas fa-paper-plane"></i></button>
+                                        <button type="submit" id="sendBtn" style="outline: none;" onclick="sendMsg();"
+                                            class="btn btn-primary"><i class="fas fa-paper-plane"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -86,10 +86,11 @@
     var userData = {};
     socket.on('connect', function () {
         userData.name = `{{user.name}}`;
-        userData.room = `{{user.room}}`;
+        userData.roomName = `{{user.roomName}}`;
         userData.email = `{{user.email}}`;
         userData.id = socket.id;
-        userData.imgUrl = `{{user.imgUrl}}`
+        userData.imgUrl = `{{user.imgUrl}}`;
+        userData.roomId = `{{user.roomId}}`;
         socket.emit('userConnected', userData)
     });
 
@@ -167,11 +168,12 @@
             $("#input-box").focus();
         } else {
             sendData.name = `{{user.name}}`;
-            sendData.room = `{{user.room}}`;
+            sendData.roomName = `{{user.roomName}}`;
             sendData.email = `{{user.email}}`;
             sendData.id = socket.id;
+            sendData.imgUrl = `{{user.imgUrl}}`;
+            sendData.roomId = `{{user.roomId}}`;
             sendData.msg = inputText;
-            sendData.imgUrl = `{{user.imgUrl}}`
             socket.emit('sendingMsg', sendData);
             document.getElementById("input-box").value = '';
             $("#input-box").focus();

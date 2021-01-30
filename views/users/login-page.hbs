@@ -37,7 +37,7 @@
                                             <li class="notice-tag">
                                                 <h2>Type valid informations to login</h2>
                                             </li>
-                                            <form class="form" method="post" action="/login">
+                                            <form id="form" class="form" action="/login">
                                                 <div class="form">
                                                     <label class="form-label" for="">Name</label>
                                                     <input type="text" placeholder="Username" class="form-control"
@@ -48,24 +48,30 @@
                                                         name="email" required>
                                                     <br>
                                                     <label class="form-label" for="">Select room</label>
-                                                    <select name="room" class="form-control" size="3"
-                                                        aria-label="size 3 select example" required>
+                                                    <select id="select" name="roomId" class="form-control" size="4"
+                                                        aria-label="multiple select example" required>
                                                         <option value="Public" selected>Public</option>
                                                     </select>
+                                                    <div class="col-md-12 text-center mt-4">
+                                                        <p style="color: white;" class="m-auto">Or</p>
+                                                        <a type="menu" onclick="createRoom();"
+                                                            class="m-auto btn btn-primary">Create new room</a>
+                                                    </div>
                                                 </div>
-                                                    <label class="form-label" for="">Your profile</label>
+                                                <label class="form-label" for="">Your profile</label>
                                                 <div onclick="generateImgUrl();"
                                                     style="height: auto;justify-content: center;display: flex;max-width: 30vw;margin: auto;"
                                                     class="form-control">
-                                                    <input type="text" id="imgUrl"
-                                                        name="imgUrl" hidden>
+                                                    <input type="text" id="imgUrl" name="imgUrl" hidden>
+                                                    <div style="display: none;" id="roomDet"></div>
                                                     <img onclick="generateImgUrl();" style="width: 12vw;height: auto;"
                                                         id="imgPreview" src="" alt="Your profile">
                                                 </div>
                                         </ul>
                                     </div>
                                     <div class="input-div">
-                                        <button class="btn-block btn btn-primary"><i class="fas fa-sign-in-alt"></i>
+                                        <button type="submit" class="btn-block btn btn-primary"><i
+                                                class="fas fa-sign-in-alt"></i>
                                             <p>Log in</p>
                                         </button>
                                         </form>
@@ -80,6 +86,141 @@
     </div>
 </div>
 <script>
+    // this is the id of the form
+    $("#form").submit(async function (e) {
+
+        e.preventDefault(); // avoid to execute the actual submit of the form.
+
+        var selectedValue = document.getElementById("select").value
+        if (selectedValue === "Public" || selectedValue === "") {
+            let form = $("#form");
+            form.append(`<input type="text" name="roomName" hidden value="Public">`)
+            let url = form.attr('action');
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: form.serialize(), // serializes the form's elements.
+                success: function (url) {
+                    //alert(response); // show response from the php script.
+                    window.location = url;
+                }
+            });
+        } else {
+            let roomId = document.getElementById("select").value;
+            $.ajax({
+                type: "POST",
+                url: "/if-pass",
+                data: {
+                    roomId: roomId
+                }, // serializes the form's elements.
+                success: async function (response) {
+                    console.log(response.password)
+                    if (response.password === true) {
+                        let typePass = await prompt(`Password:`);
+                        $.ajax({
+                            type: "POST",
+                            url: "/checkRoomPass",
+                            data: {
+                                typePass: typePass,
+                                roomId: roomId
+                            }, // serializes the form's elements.
+                            success: function (response) {
+                                if (response.loginStatus) {
+                                    let form = $("#form");
+                                    let url = form.attr('action');
+
+                                    $.ajax({
+                                        type: "POST",
+                                        url: url,
+                                        data: form.serialize(), // serializes the form's elements.
+                                        success: function (url) {
+                                            //alert(response); // show response from the php script.
+                                            window.location = url;
+                                        }
+                                    });
+                                } else {
+                                    alert("Incorrect password typed")
+                                }
+                            }
+                        });
+                    } else {
+                        $.ajax({
+                            type: "POST",
+                            url: "/checkRoomPass",
+                            data: {
+                                typePass: false,
+                                roomId: roomId
+                            }, // serializes the form's elements.
+                            success: function (response) {
+                                if (response.loginStatus) {
+                                    let form = $("#form");
+                                    let url = form.attr('action');
+
+                                    $.ajax({
+                                        type: "POST",
+                                        url: url,
+                                        data: form.serialize(), // serializes the form's elements.
+                                        success: function (url) {
+                                            //alert(response); // show response from the php script.
+                                            window.location = url;
+                                        }
+                                    });
+                                } else {
+                                    alert("Incorrect password typed")
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+            )
+        }
+    });
+</script>
+<script>
+    function genId() {
+        return '_' + Math.random().toString(36).substr(2, 9);
+    };
+</script>
+<script>
+    async function createRoom() {
+        var roomName = await prompt("Please type new room name:");
+        if (roomName === null || roomName === "") {
+            alert("Room not created..!");
+        } else {
+            var roomPass = await prompt(`Enter password for room "${roomName}"`);
+            if (roomPass === null || roomPass === "") {
+                let roomId = genId();
+                $('#select').append(`<option value="${roomId}" selected>${roomName}</option>`);
+                $.ajax({
+                    type: "POST",
+                    url: "/create-room",
+                    data: {
+                        roomName: roomName,
+                        roomPass: false,
+                        roomId: roomId
+                    }
+                });
+                alert("Room created without password..!");
+            } else {
+                let roomId = genId();
+                $('#select').append(`<option value="${roomId}" selected>${roomName}</option>`);
+                $.ajax({
+                    type: "POST",
+                    url: "/create-room",
+                    data: {
+                        roomName: roomName,
+                        roomPass: roomPass,
+                        roomId: roomId
+                    }
+                });
+                alert("Room created with password..!");
+            }
+        }
+    }
+</script>
+<script>
     window.onload = () => {
         const imgLogos = ["https://www.bootdey.com/img/Content/avatar/avatar1.png", "https://www.bootdey.com/img/Content/avatar/avatar2.png", "https://www.bootdey.com/img/Content/avatar/avatar3.png", "https://www.bootdey.com/img/Content/avatar/avatar4.png", "https://www.bootdey.com/img/Content/avatar/avatar5.png", "https://www.bootdey.com/img/Content/avatar/avatar6.png", "https://www.bootdey.com/img/Content/avatar/avatar7.png", "https://www.bootdey.com/img/Content/avatar/avatar8.png"];
 
@@ -88,6 +229,16 @@
 
         $("#imgUrl").val(imgUrl);
         document.getElementById("imgPreview").src = imgUrl;
+
+        $.ajax({
+            type: "POST",
+            url: "/getRooms",// serializes the form's elements.
+            success: function (allRooms) {
+                allRooms.forEach((itm, key) => {
+                    $("#select").append(`<option value="${itm.roomId}">${itm.roomName}</option>`)
+                })
+            }
+        });
     }
     function generateImgUrl() {
         const imgLogos = ["https://www.bootdey.com/img/Content/avatar/avatar1.png", "https://www.bootdey.com/img/Content/avatar/avatar2.png", "https://www.bootdey.com/img/Content/avatar/avatar3.png", "https://www.bootdey.com/img/Content/avatar/avatar4.png", "https://www.bootdey.com/img/Content/avatar/avatar5.png", "https://www.bootdey.com/img/Content/avatar/avatar6.png", "https://www.bootdey.com/img/Content/avatar/avatar7.png", "https://www.bootdey.com/img/Content/avatar/avatar8.png"];
