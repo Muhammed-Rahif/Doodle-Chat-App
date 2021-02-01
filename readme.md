@@ -44,16 +44,27 @@ This is an example of how to list things you need to use the software and how to
 
 - Install node package manager from [nodejs.org](https://nodejs.org/)
 
-### Installation
+### Installation and running locally 
 
 1. Clone the repo
    ```sh
    git clone https://github.com/Muhammed-Rahif/Doodle-Chat-App.git
    ```
-2. Install NPM packages
+2. go to project directory
+   ```sh
+   cd Doodle-Chat-App
+   ```
+3. Install NPM packages
    ```sh
    npm install
    ```
+4. Run project locally
+   ```sh
+   npm start
+   ```
+5. Open web browser of your system
+   
+   And go to [localhost:3000](http://localhost:3000)
 
 ## Authors
 
