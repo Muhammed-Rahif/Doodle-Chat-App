@@ -30,7 +30,7 @@
                                 <div id="card" class="card">
                                     <div class="card-header">
                                         <span>Login page</span>
-                                        <a href="#" class="btn logut-btn"><i class="fas fa-sign-out-alt fa-2x"></i></a>
+                                        <a onclick="goHome();" class="btn logut-btn"><i class="fas fa-sign-out-alt fa-2x"></i></a>
                                     </div>
                                     <div style="overflow-y: auto;height: 60vh;" class="card-body height3">
                                         <ul class="chat-list">
@@ -85,6 +85,17 @@
         </div>
     </div>
 </div>
+<script language="javascript">
+    function goHome() {
+        if (typeof window.home == 'function') {
+            window.home();
+        } else if (document.all) {
+            window.location.href = "about:home";
+        } else {
+            window.location.href = "https://www.google.com"
+      }
+    }
+</script>
 <script>
     // this is the id of the form
     $("#form").submit(async function (e) {

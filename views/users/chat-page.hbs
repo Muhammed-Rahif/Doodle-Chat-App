@@ -45,7 +45,7 @@
                                         class="card-body height3">
                                         <ul id="chat-area" class="chat-list">
                                             <li class="notice-tag">
-                                                <h2>Welcome to {{user.roomName}}</h2>
+                                                <h2>Welcome to "{{user.roomName}}" Room</h2>
                                             </li>
                                         </ul>
                                     </div>
@@ -94,12 +94,13 @@
         socket.emit('userConnected', userData)
     });
 
-    socket.on('disconnect', function () {
+    socket.on('disconnect',async function () {
         socket.emit('userDisconnected', userData)
     });
 
     socket.on('userConnect', async (userData, allUsers) => {
-        $('#chat-area').append(`<li class="notice-tag"><h2>${userData.name} joined</h2></li>`);
+        let userName = (userData.id===this.userData.id ? `You` : userData.name)
+        $('#chat-area').append(`<li class="notice-tag"><h2>${userName} joined</h2></li>`);
         await $('#users').empty();
         allUsers.forEach((itm, key) => {
             $('#users').append(`<div class="li">
@@ -112,11 +113,10 @@
     });
 
     socket.on('userDisconnect', async (userData, allUsers) => {
-        $('#chat-area').append(`<li class="notice-tag"><h2>${userData.name} left</h2></li>`);
+        let userName = (userData.id===this.userData.id ? `You` : userData.name)
+        $('#chat-area').append(`<li class="notice-tag"><h2>${userName} left</h2></li>`);
         await $('#users').empty();
         allUsers.forEach((itm, key) => {
-            console.log(itm.name)
-            console.log(key)
             $('#users').append(`<div class="li">
                                 <img class="liImg rounded" alt="Avtar" src=${itm.imgUrl}>
                                 <p>${itm.name}</p>
@@ -127,32 +127,31 @@
     });
 
     socket.on('sendMsg', (data) => {
-        console.log(`${data.id} : ${userData.id}`)
         if (data.id === userData.id) {
             $('#chat-area').append(`
                                 <li class="out">
                                     <div class="chat-img">
                                         <img alt="Avtar" src=${data.imgUrl}>
-                                        </div>
-                                            <div class="chat-body">
-                                                <div class="chat-message">
-                                                    <h5>${data.name}</h5>
-                                                    <p>${data.msg}</p>
+                                    </div>
+                                    <div class="chat-body">
+                                        <div class="chat-message">
+                                            <h5><small style="color: white;">${data.sndTime}</small>&emsp;&emsp;${data.name}</h5>
+                                                <p style="word-break: break-all;">${data.msg}</p>
                                             </div>
-                                        </div>
+                                    </div>
                                 </li>`);
         } else {
             $('#chat-area').append(`
                                 <li class="in">
-                                    <div class="chat-img">
-                                        <img alt="Avtar" src=${data.imgUrl}>
+                                        <div class="chat-img">
+                                            <img alt="Avtar" src=${data.imgUrl}>
                                         </div>
-                                            <div class="chat-body">
-                                                <div class="chat-message">
-                                                    <h5>${data.name}</h5>
-                                                    <p>${data.msg}</p>
-                                            </div>
+                                        <div class="chat-body">
+                                        <div class="chat-message">
+                                            <h5>${data.name}&emsp;&emsp;<small style="color: white;">${data.sndTime}</small></h5>
+                                            <p style="word-break: break-all;">${data.msg}</p>
                                         </div>
+                                    </div>
                                 </li>`);
         }
         var objDiv = document.getElementById("chat-body");
@@ -174,6 +173,7 @@
             sendData.imgUrl = `{{user.imgUrl}}`;
             sendData.roomId = `{{user.roomId}}`;
             sendData.msg = inputText;
+            sendData.sndTime = moment().format('LT');
             socket.emit('sendingMsg', sendData);
             document.getElementById("input-box").value = '';
             $("#input-box").focus();
