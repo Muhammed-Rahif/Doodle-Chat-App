@@ -4,7 +4,7 @@
   "description": "This is a real time chat application named Doodle.",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon ./server.js"
+    "start": "node ./server.js"
   },
   "author": "Muhammed Rahif",
   "license": "ISC",
@@ -13,5 +13,8 @@
     "express-handlebars": "^5.2.0",
     "express-session": "^1.17.1",
     "socket.io": "^3.1.0"
+  },
+  "engines": {
+    "node": "12.19.0"
   }
 }
