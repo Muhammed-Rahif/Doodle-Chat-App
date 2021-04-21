@@ -1,6 +1,6 @@
 {
   "name": "doodle-chat-app",
-  "version": "1.0.0",
+  "version": "1.5.0",
   "description": "This is a real time chat application named Doodle.",
   "main": "server.js",
   "scripts": {
