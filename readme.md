@@ -11,10 +11,10 @@
 
   <p align="center">This is a project built in <a href="https://nodejs.org/">Node.js</a> and <a href="https://socket.io/">Socket.io</a>.
     <br />
-    <a href="https://github.com/Muhammed-Rahif/Doodle-Chat-App"><strong>Explore the docs »</strong></a>
+    <a href="https://doodle-chat-app.herokuapp.com"><strong>Hosted In »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/Muhammed-Rahif/Doodle-Chat-App">View Demo</a>
+    <a href="https://github.com/Muhammed-Rahif/Doodle-Chat-App">Docs</a>
     ·
     <a href="https://github.com/Muhammed-Rahif/Doodle-Chat-App/issues">Report Bug</a>
     ·
